@@ -1,0 +1,84 @@
+<!DOCTYPE html >
+<html lang="es">
+ <head> 
+   <title> HTML </title> 
+</head>   
+
+<style type="text/css">
+ table, tr, td {
+	border: 1px solid black;
+}
+
+</style> 
+
+<body>
+
+
+<div style="display: flex; justify-content: center;align-items: center;"
+<table>
+<tr>
+<td colspan="2"   style="background-color: white"><h2>Elementos de HTML</h2></td>
+</tr>
+<tr><td><input id="captura" type="text" placeholder="Escribe tu name"></td><td>
+  
+  <input type="button" value="Agregar" onclick="agregarFila()"></td></tr>
+
+  
+
+</table>
+</div>
+<center>
+  <table id="tabla">
+    <tr>
+    <td   style="background-color: white ">Elementos</td>
+    <td   style="background-color: white ">Descripcion</td>
+    </tr>
+    <tr>
+      <td   style="background-color: white">Prueba</td>
+      <td id="ejemplo"  style="background-color: white">aqui ira otro texto.</td>
+    </tr>
+    </table>
+</center>
+<script>
+  function mostrarNombre() {
+      
+      let inputNombre = document.getElementById("captura");
+      
+      let nombre = inputNombre.value;
+      
+      document.getElementById("ejemplo").innerHTML=nombre;  
+  } 
+</script>
+<script>
+  function agregarFila() {
+    let nombre = document.getElementById("captura").value;
+
+  var tabla = document.getElementById("tabla");
+  
+  var nuevaFila = tabla.insertRow(-1);
+  
+  var celda1 = nuevaFila.insertCell(0);
+  var celda2 = nuevaFila.insertCell(1);
+  var celda3 = nuevaFila.insertCell(2);
+  
+  var numeroFilas = tabla.rows.length;
+
+  celda1.textContent = numeroFilas;
+  celda2.textContent = nombre;
+   
+   var botonEliminar = document.createElement("button");
+    botonEliminar.textContent = "Eliminar";
+    
+    botonEliminar.onclick = function() {
+        this.parentNode.parentNode.remove();
+    };
+
+    celda3.appendChild(botonEliminar);
+  }
+
+  
+
+</script>
+</body>
+
+</html>
