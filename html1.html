@@ -1,87 +1,126 @@
-<!DOCTYPE html >
-<html lang="es">
- <head> 
-   <title> HTML </title> 
-</head>   
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tabla </title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
 
-<style type="text/css">
- table, tr, td {
-	border: 1px solid black;
-}
+    .container {
+      margin: 20px;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f5f5f5;
+    }
 
-</style> 
-<body bgcolor="#c1a6ff">
+    h1 {
+      text-align: center;
+    }
 
-</body>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
 
-<body>
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
 
+    tr:nth-child(even) {
+      background-color: #87c0f9;
+    }
 
-<div style="display: flex; justify-content: center;align-items: center;"
-<table>
-<tr>
-<td colspan="2"   style="background-color: white"><h2>Elementos de HTML</h2></td>
-</tr>
-<tr><td><input id="captura" type="text" placeholder="Escribe tu name"></td><td>
-  
-  <input type="button" value="Agregar" onclick="agregarFila()"></td></tr>
+    th {
+      background-color: #84d6f9;
+      color: white;
+    }
 
-  
+    button {
+      padding: 8px 12px;
+      background-color: #97d7f5;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
 
-</table>
-</div>
-<center>
-  <table id="tabla">
-    <tr>
-    <td   style="background-color: rgb(243, 168, 155) ">Numero de palabra</td>
-    <td   style="background-color: rgb(235, 168, 184) ">palabra</td>
-    </tr>
-    <tr>
-      <td   style="background-color: rgb(196, 252, 208)"></td>
-      <td id="ejemplo"  style="background-color: rgb(143, 217, 240)"></td>
-    </tr>
+    button:hover {
+      background-color: #8dd6fd;
+    }
+  </style>
+</head>
+<body bgcolor="blue">
+  <div class="container">
+    <h1>SSC</h1>
+    <input type="text" id="newItem" placeholder="Nuevo elemento">
+    <button onclick="addItem()">Agregar</button>
+    <table id="myTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Dato</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
     </table>
-</center>
-<script>
-  function mostrarNombre() {
-      
-      let inputNombre = document.getElementById("captura");
-      
-      let nombre = inputNombre.value;
-      
-      document.getElementById("ejemplo").innerHTML=nombre;  
-  } 
-</script>
-<script>
-  function agregarFila() {
-    let nombre = document.getElementById("captura").value;
+    <button onclick="clearData()">Limpiar</button>
+  </div>
 
-  var tabla = document.getElementById("tabla");
-  
-  var nuevaFila = tabla.insertRow(-1);
-  
-  var celda1 = nuevaFila.insertCell(0);
-  var celda2 = nuevaFila.insertCell(1);
-  var celda3 = nuevaFila.insertCell(2);
-  
-  var numeroFilas = tabla.rows.length;
+  <script>
+    const newItemInput = document.getElementById('newItem');
+    const tableBody = document.getElementById('myTable').getElementsByTagName('tbody')[0];
 
-  celda1.textContent = numeroFilas;
-  celda2.textContent = nombre;
-   
-   var botonEliminar = document.createElement("button");
-    botonEliminar.textContent = "Eliminar";
-    
-    botonEliminar.onclick = function() {
-        this.parentNode.parentNode.remove();
-    };
+    // Cargar datos del almacenamiento local al cargar la página
+    let data = JSON.parse(localStorage.getItem('tableData')) || [];
 
-    celda3.appendChild(botonEliminar);
-  }
+    function addItem() {
+      const newItem = newItemInput.value.trim();
 
-  
+      if (newItem !== '') {
+        data.push(newItem);
+        renderTable();
+        newItemInput.value = '';
+      } else {
+        alert("Por favor, ingresa un elemento válido.");
+      }
 
-</script>
+      localStorage.setItem('tableData', JSON.stringify(data));
+    }
+
+    function deleteItem(index) {
+      data.splice(index, 1);
+      renderTable();
+      localStorage.setItem('tableData', JSON.stringify(data));
+    }
+
+    function renderTable() {
+      tableBody.innerHTML = '';
+      data.forEach((item, index) => {
+        const row = tableBody.insertRow();
+        const cell1 = row.insertCell(0);
+        const cell2 = row.insertCell(1);
+        const cell3 = row.insertCell(2);
+        cell1.textContent = index + 1;
+        cell2.textContent = item;
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Eliminar';
+        deleteButton.onclick = () => deleteItem(index);
+        cell3.appendChild(deleteButton);
+      });
+    }
+
+    function clearData() {
+      data = [];
+      renderTable();
+      localStorage.removeItem('tableData');
+    }
+  </script>
 </body>
-
 </html>
